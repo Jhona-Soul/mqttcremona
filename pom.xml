@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>mqtt-testing</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>mqttcremona</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>mqtt-testing</name>
 	<description>Demo project for Spring Boot</description>

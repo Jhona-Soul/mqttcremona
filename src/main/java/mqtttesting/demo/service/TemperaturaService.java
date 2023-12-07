@@ -1,14 +1,15 @@
 package mqtttesting.demo.service;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+
 import org.springframework.integration.core.GenericHandler;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
-@Configuration
+import org.springframework.stereotype.Service;
+
+@Service
 public class TemperaturaService {
-    @Bean
+
     IntegrationFlow inboundFlow (MqttPahoMessageDrivenChannelAdapter inboundAdapter) {
         return IntegrationFlow
                 .from(inboundAdapter)
@@ -21,8 +22,7 @@ public class TemperaturaService {
                 .get();
     }
 
-    @Bean
     MqttPahoMessageDrivenChannelAdapter inbounAdapter(MqttPahoClientFactory Factory) {
-        return new MqttPahoMessageDrivenChannelAdapter("JHONATAN", Factory, "Nivel");
+        return new MqttPahoMessageDrivenChannelAdapter("jhonatan-IT", Factory, "Prueba");
     }
 }
