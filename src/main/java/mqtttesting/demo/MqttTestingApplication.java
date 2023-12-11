@@ -1,15 +1,13 @@
 package mqtttesting.demo;
 
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.integration.annotation.ServiceActivator;
-import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.core.GenericHandler;
-import org.springframework.integration.core.MessageProducer;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
@@ -26,6 +24,11 @@ import static org.springframework.web.servlet.function.RouterFunctions.route;
 @SpringBootApplication
 public class MqttTestingApplication {
 
+	@Value("${mqtt.server}")
+	private String ipServerBroker;
+	@Value("${mqtt.port}")
+	private String brokerPort;
+
 	public static void main(String[] args) {
 		SpringApplication.run(MqttTestingApplication.class, args);
 	}
@@ -34,7 +37,7 @@ public class MqttTestingApplication {
 	MqttPahoClientFactory mqttClientFactory() {
 		DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
 		MqttConnectOptions options = new MqttConnectOptions();
-		options.setServerURIs(new String[] {"tcp://192.168.10.110:1883"});
+		options.setServerURIs(new String[] {"tcp://"+ipServerBroker+":"+brokerPort});
 		factory.setConnectionOptions(options);
 		return factory;
 	}
@@ -81,6 +84,7 @@ public class MqttTestingApplication {
 	class InConfiguration {
 		@Bean
 		IntegrationFlow inboundFlow (MqttPahoMessageDrivenChannelAdapter inboundAdapter) {
+
 			return IntegrationFlow
 					.from(inboundAdapter)
 					.handle((GenericHandler<String>)(payload, headers) ->{
@@ -94,20 +98,20 @@ public class MqttTestingApplication {
 
 		@Bean
 		MqttPahoMessageDrivenChannelAdapter inbounAdapter(MqttPahoClientFactory Factory) {
-			return new MqttPahoMessageDrivenChannelAdapter("JHONATAN", Factory, "Nivel");
+			return new MqttPahoMessageDrivenChannelAdapter("JHONATAN", Factory, "Sensores");
 		}
 
 
 		/*
 		* New Message!
-		 55,18
+		Valor Prueba: 55,18
 		mqtt_receivedRetained=false
 		mqtt_id=0
 		mqtt_duplicate=false
-		id=e963e451-9e9d-5002-44e5-c3d1a9145cf0
-		mqtt_receivedTopic=Prueba
+		id=096d4401-2b02-109c-9a32-101775b57127
+		mqtt_receivedTopic=Sensores
 		mqtt_receivedQos=0
-		timestamp=1701890274088
+		timestamp=1701962870561
 		* */
 
 	}
